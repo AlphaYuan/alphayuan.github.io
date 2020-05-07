@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.2.0">
@@ -20,18 +20,18 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="make a better world">
+  <meta name="description" content="This is a simple blog by a HITer who is not very diligent and intelligent.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Algorithm">
-<meta property="og:url" content="http://yoursite.com/Algorithm/index.html">
+<meta property="og:title" content="About">
+<meta property="og:url" content="http://yoursite.com/about/index.html">
 <meta property="og:site_name" content="alphaYuan">
-<meta property="og:description" content="make a better world">
-<meta property="article:published_time" content="2020-05-05T12:14:13.000Z">
-<meta property="article:modified_time" content="2020-05-05T12:14:48.423Z">
+<meta property="og:description" content="This is a simple blog by a HITer who is not very diligent and intelligent.">
+<meta property="article:published_time" content="2020-05-05T14:01:20.000Z">
+<meta property="article:modified_time" content="2020-05-05T14:03:59.755Z">
 <meta property="article:author" content="蒋元">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/Algorithm/">
+<link rel="canonical" href="http://yoursite.com/about/">
 
 
 <script id="page-configurations">
@@ -44,7 +44,7 @@
   };
 </script>
 
-  <title>Algorithm | alphaYuan
+  <title>About | alphaYuan
 </title>
   
 
@@ -74,12 +74,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -170,7 +170,7 @@
     <div class="post-block" lang="zh-Hans">
       <header class="post-header">
 
-<h1 class="post-title" itemprop="name headline">Algorithm
+<h1 class="post-title" itemprop="name headline">About
 </h1>
 
 <div class="post-meta">
@@ -184,7 +184,8 @@
       
       
       <div class="post-body">
-          
+          <p>This is a simple blog by a HITer who is not very diligent and intelligent.</p>
+
       </div>
       
       
@@ -338,6 +339,7 @@
   
   <script color='0,0,255' opacity='0.5' zIndex='-1' count='77' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
   <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
@@ -351,6 +353,65 @@
 
 <script src="/js/next-boot.js"></script>
 
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
 
 
 
@@ -370,11 +431,13 @@
 
 
 
+    <div id="pjax">
   
 
   
 
   
 
+    </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>
